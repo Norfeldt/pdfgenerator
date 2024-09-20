@@ -1,0 +1,51 @@
+\documentclass[a4paper]{article}
+\usepackage{fancyhdr}
+\usepackage{geometry}
+\usepackage{ulem}  % For strikethrough (optional)
+\usepackage{hyperref}  % For hyperlinks
+\usepackage{graphicx}  % For including images
+\usepackage{fancyvrb}  % For verbatim environments
+\usepackage{xcolor}  % For coloring text and code
+\usepackage{listings}  % For code syntax highlighting
+\usepackage{longtable}  % For long tables
+\usepackage{booktabs}  % For improved table formatting (\toprule, \midrule, \bottomrule)
+\usepackage{amssymb}  % For additional math symbols, including \boxtimes
+\usepackage{framed}  % For Shaded environment
+\geometry{a4paper, margin=1in}
+\pagestyle{fancy}
+\fancyhf{}
+\rfoot{\thepage}
+
+% Define \tightlist to avoid LaTeX errors
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+% Define \pandocbounded to avoid errors
+\newcommand{\pandocbounded}[1]{#1}
+
+% Define the Shaded environment
+\definecolor{shadecolor}{rgb}{0.9,0.9,0.9}
+\newenvironment{Shaded}{%
+  \begin{snugshade}}{%
+  \end{snugshade}}
+
+% Configure listings package for code syntax highlighting
+\lstset{
+  basicstyle=\ttfamily,
+  breaklines=true,
+  backgroundcolor=\color{shadecolor},
+  frame=single,
+  keywordstyle=\color{blue},
+  commentstyle=\color{gray},
+  stringstyle=\color{red}
+}
+
+\begin{document}
+$if(toc)$
+\tableofcontents
+\newpage
+$endif$
+
+$body$
+
+\end{document}
