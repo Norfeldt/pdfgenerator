@@ -15,6 +15,21 @@
 \usepackage{booktabs}
 \usepackage{svg}
 
+% Add fontspec package for custom font support
+\usepackage{fontspec}
+
+% Set up Open Sans as the main font using static files
+\setmainfont{Open Sans}[
+    Path = ./Open_Sans/static/,
+    Extension = .ttf,
+    UprightFont = OpenSans-Regular,
+    ItalicFont = OpenSans-Italic,
+    BoldFont = OpenSans-Bold,
+    BoldItalicFont = OpenSans-BoldItalic
+]
+
+% Remove the fallback font family definition since we're using static fonts directly
+
 % Define \boxtimes if it's not available
 \providecommand{\boxtimes}{\times}
 
