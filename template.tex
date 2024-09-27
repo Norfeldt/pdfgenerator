@@ -128,15 +128,28 @@
 
 % Title Page
 \begin{titlepage}
-    \centering
-    \vspace*{2cm}
-    {\Huge\bfseries $title$\par}
-    \vspace{1cm}
+    \vspace*{-1cm}
+    % Logo in the top left corner
+    \IfFileExists{logo.pdf}{%
+        \includegraphics[height=2cm]{logo.pdf}%
+    }{%
+        % File doesn't exist, do nothing
+    }%
+    \vspace{2cm}
+    
+    % Title left-aligned and size 60
+    \begin{flushleft}
+    {\fontsize{60}{72}\selectfont\textbf{$title$}\par}
+    \vspace{0.5cm}
+    
+    % Author name below the title
     {\Large $author$\par}
     \vspace{1cm}
-    {\large \textbf{\documentclassification}\par}
+    
+    % Removed the confidential classification
     \vfill
     {\large \today\par}
+    \end{flushleft}
 \end{titlepage}
 
 % Table of Contents
