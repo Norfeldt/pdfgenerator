@@ -48,8 +48,7 @@ To jump to the equipment list, [click here](#unordered-list-essential-equipment-
 
 ## Images
 
-![City map](<city-of-copenhagen-miljozoner.png>)
-
+![City map](<city-of-copenhagen-miljozoner.png>){width=200px}
 
 ## Code
 
