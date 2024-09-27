@@ -17,6 +17,8 @@ documentid: "QRP-2023-002"
 ##### Quantum Entanglement and Nonlocal Causality
 ###### Higgs Boson: The God Particle Unveiled
 
+\newpage
+
 ## Emphasis
 
 Dr. Elara Voss *hypothesized* that the quantum flux could be _manipulated_ to create **wormholes** through __spacetime__. Her groundbreaking research suggested that ***stable traversable wormholes*** might be ___possible___ using exotic matter with negative energy density.
