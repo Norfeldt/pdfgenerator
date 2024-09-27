@@ -3,8 +3,12 @@
 # Print Pandoc version (optional, for debugging)
 pandoc --version
 
-# Convert SVG to PDF
-inkscape logo.svg --export-filename=logo.pdf
+# Convert SVG to PDF only if necessary
+if [ ! -f logo.pdf ] || [ logo.svg -nt logo.pdf ]; then
+    rsvg-convert -f pdf -o logo.pdf logo.svg
+    qpdf --object-streams=disable --linearize logo.pdf logo_normalized.pdf && mv logo_normalized.pdf logo.pdf
+    exiftool -all:all= logo.pdf
+fi
 
 # Print the contents of the current directory
 echo "Contents of the current directory:"
