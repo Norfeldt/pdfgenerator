@@ -1,14 +1,10 @@
 ---
-header-image: logo.svg
+title: "Your Document Title"
+author: "Your Name"
+header-image: "logo.svg"
 ---
 
-# The Quantum Resonance Paradigm
+# Your content starts here
 
-## Unraveling the Cosmic Web
-
-This is a simple introduction to the topic.
-
-## Conclusion
-
-This concludes our brief overview.
+...
 

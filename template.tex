@@ -1,4 +1,6 @@
-\documentclass{article}
+\documentclass[a4paper]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{ifxetex,ifluatex}
 \usepackage{fancyhdr}
 \usepackage{graphicx}
 \usepackage{geometry}
@@ -6,33 +8,85 @@
 \usepackage{hyperref}
 \usepackage{xcolor}
 \usepackage{enumitem}
-\usepackage{svg} % To handle SVG images
-\usepackage{ifthen} % Add this line to use ifthen
+\usepackage{ifthen}
+\usepackage{fancyvrb}
+\usepackage{framed}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{svg}
+
+% Define \boxtimes if it's not available
+\providecommand{\boxtimes}{\times}
+
+% Add the tightlist definition
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+% Add the pandocbounded definition
+\newcommand{\pandocbounded}[1]{\begin{minipage}{\linewidth}#1\end{minipage}}
+
+% Define shadecolor
+\definecolor{shadecolor}{RGB}{248,248,248}
+
+% Define Shaded environment
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+
+% Define Highlighting environment
+\newenvironment{Highlighting}{}{}
+
+% Define syntax highlighting commands
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{#1}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+
+% Define additional syntax highlighting commands
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{#1}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{#1}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{#1}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
 
 % Page geometry
 \geometry{a4paper, margin=1in}
 
 % Header and Footer settings
 \pagestyle{fancy}
-\fancyhf{} % Clear header and footer
-
-% Define a command to include the header image, considering both PNG and SVG formats
-$if(header-image)$
-\ifthenelse{\equal{$header-image$}{logo.svg}}{%
-    \newcommand{\headerimage}{\includesvg[height=1cm]{$header-image$}} % Use includesvg for SVG files
-}{%
-    \newcommand{\headerimage}{\includegraphics[height=1cm]{$header-image$}} % Use includegraphics for other formats
-}
-$else$
-\newcommand{\headerimage}{}
-$endif$
+\fancyhf{}
 
 % Header
-\fancyhead[L]{\textbf{Your Company Name}} % Customize this text
-\fancyhead[R]{\headerimage} % Use the image provided in the markdown metadata
+\fancyhead[L]{\textbf{Your Company Name}}
+\fancyhead[R]{%
+  \IfFileExists{logo.pdf}{%
+    \includegraphics[height=1cm]{logo.pdf}%
+  }{%
+    % File doesn't exist, do nothing
+  }%
+}
 
 % Footer
-\renewcommand{\footrulewidth}{0.4pt} % Line at the top of the footer
+\renewcommand{\footrulewidth}{0.4pt}
 \fancyfoot[L]{\scriptsize Company Name \\ Address Line 1 \\ Address Line 2}
 \fancyfoot[C]{\scriptsize Version 1.0, Document ID}
 \fancyfoot[R]{\scriptsize Page \thepage\ of \pageref{LastPage}}
@@ -47,9 +101,9 @@ $endif$
 \begin{titlepage}
     \centering
     \vspace*{2cm}
-    {\Huge\bfseries The Quantum Resonance Paradigm\par}
+    {\Huge\bfseries $title$\par}
     \vspace{1cm}
-    {\Large Author Name\par}
+    {\Large $author$\par}
     \vfill
     {\large \today\par}
 \end{titlepage}
@@ -58,11 +112,7 @@ $endif$
 \tableofcontents
 \newpage
 
-% Include Markdown content here
-%\input{content.tex}
-
-
-% In order to include the content list from markdown file to the latex, it should match with the name of the markdown file
+% Include Markdown content
 $body$
 
 \end{document}

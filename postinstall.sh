@@ -3,29 +3,18 @@
 # Update package lists
 apt-get update
 
-# Install TeX Live and required LaTeX packages
-apt-get install -y --no-install-recommends \
-    texlive-latex-base \
+# Install necessary packages
+apt-get install -y \
+    texlive-xetex \
     texlive-latex-extra \
     texlive-fonts-recommended \
-    texlive-fonts-extra \
-    texlive-xetex
+    lmodern \
+    texlive-lang-european \
+    texlive-lang-french \
+    texlive-science \
+    texlive-pictures \
+    inkscape
 
-# Install Inkscape
-apt-get install -y inkscape
-
-# Install additional LaTeX packages used in template.tex
-tlmgr install \
-    fancyhdr \
-    geometry \
-    lastpage \
-    hyperref \
-    xcolor \
-    enumitem \
-    svg \
-    ifthen
-
-# Make the run.sh script executable
-chmod +x /workspace/run.sh
-
-echo "Installation complete!"
+# Clean up
+apt-get clean
+rm -rf /var/lib/apt/lists/*
