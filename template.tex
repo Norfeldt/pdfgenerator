@@ -98,7 +98,7 @@
 \fancyhf{}
 
 % Header
-\fancyhead[L]{\textbf{Your Company Name}}
+\fancyhead[L]{\textbf{$company$}}
 \fancyhead[R]{%
   \IfFileExists{logo.pdf}{%
     \includegraphics[height=1cm]{logo.pdf}%
@@ -109,12 +109,19 @@
 
 % Footer
 \renewcommand{\footrulewidth}{0.4pt}
-\fancyfoot[L]{\scriptsize Company Name \\ Address Line 1 \\ Address Line 2}
-\fancyfoot[C]{\scriptsize Version 1.0, Document ID}
+\fancyfoot[L]{\scriptsize $company$ \\ 
+               $addressone$ \\ 
+               $addresstwo$}
+\fancyfoot[C]{\scriptsize Version $version$ \\
+               Document ID: $documentid$ \\
+               \documentclassification}
 \fancyfoot[R]{\scriptsize Page \thepage\ of \pageref{LastPage}}
 
 \setlength{\headheight}{32.05278pt}
 \addtolength{\topmargin}{-20.05278pt}
+
+% Define document classification
+\newcommand{\documentclassification}{Confidential}
 
 % Begin document
 \begin{document}
@@ -126,6 +133,8 @@
     {\Huge\bfseries $title$\par}
     \vspace{1cm}
     {\Large $author$\par}
+    \vspace{1cm}
+    {\large \textbf{\documentclassification}\par}
     \vfill
     {\large \today\par}
 \end{titlepage}

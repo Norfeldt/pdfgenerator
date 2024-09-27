@@ -2,8 +2,12 @@
 title: "Your Document Title"
 author: "Your Name"
 header-image: "logo.svg"
+company: "Quantum Dynamics Inc."
+addressone: "123 Planck Street"
+addresstwo: "Copenhagen, DK-1000"
+version: "2.0"
+documentid: "QRP-2023-002"
 ---
-
 
 # The Quantum Resonance Paradigm
 
