@@ -1,9 +1,7 @@
 {
   "name": "Markdown to PDF",
-  "image": "pandoc/latex:latest",
-  "mounts": [
-    "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached"
-  ],
+  "image": "pandoc/extra:edge-ubuntu",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
   "workspaceFolder": "/workspace",
-  "postStartCommand": "tlmgr install tocloft minted booktabs amssymb longtable && chmod +x /workspace/run.sh"
+  "postStartCommand": "/bin/sh /workspace/postinstall.sh"
 }
