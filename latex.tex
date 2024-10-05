@@ -1,0 +1,201 @@
+\documentclass{article}
+\usepackage{fontspec} % Use fontspec instead of inconsolat
+\usepackage{listings} % For code formatting without shell-escape
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{lastpage}
+\usepackage[hidelinks]{hyperref}
+\usepackage[table,xcdraw]{xcolor} % For color support
+\usepackage{colortbl}
+\usepackage{svg}        % To handle SVG images
+\usepackage{ifthen} % Add this line to use ifthen
+\usepackage{longtable} % For tables spanning multiple pages
+\usepackage{booktabs}  % For better table lines
+\usepackage{etoolbox}
+
+%\setmainfont{Times New Roman} % Set main text font
+\setmainfont{Open Sans}
+
+%%%%% font styling 
+\usepackage[normalem]{ulem} % if underline need 
+
+%%%%%%%%%%%%%%%%%
+%%%%% Task lists 
+%%%%%%%%%%%%%%%%
+
+% error handling tightlist issue
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\newcommand{\passthrough}[1]{#1}
+
+\usepackage{enumitem}  % Required for custom list styles
+\usepackage{amssymb}   % For custom symbols like checkmarks
+\usepackage{fontawesome5}  % Optional: Use icons if needed
+
+\newlist{tasklist}{itemize}{1}
+\setlist[tasklist]{label=\(\square\), left=0pt, topsep=0pt, itemsep=1pt}  % Default: Unchecked items use a square
+
+% Handling of checked items with a filled box or a checkmark
+\newcommand{\checkeditem}{\item[\(\boxtimes\)]}  % Change \(\boxtimes\) to other symbols as needed
+
+% Automatically apply the custom environment for task lists
+\newenvironment{tasklistenv}{
+  \renewcommand{\item}{\(\square\)\hspace{2pt}}  % usually: Unchecked item symbol
+  \renewcommand{\checkeditem}{\(\boxtimes\)\hspace{2pt}}  % Default: Checked item symbol
+}{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% page size image handling 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% Define the custom command for placing images
+\newcommand{\placeimage}[3]{
+  \begin{figure}[!ht]
+    \centering
+    \includegraphics[scale=#2]{#1}
+    \caption{#3}
+  \end{figure}
+}
+
+
+%%% it worked too but with call
+%\newcommand{\halfwidthimage}[1]{
+%  \begin{figure}[htbp]
+%  \centering
+%  \includegraphics[width=0.5\textwidth]{#1}
+%  \end{figure}
+%}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Header and Footer
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\geometry{a4paper, margin=1in}
+
+\pagestyle{fancy}
+\fancyhf{} % To remove if something exist already at  header and footer
+% handles the header image from markdown
+\newcommand{\headerimage}{\includesvg[height=1cm]{$header-image$}}
+
+% Header
+%\fancyhead[L]{\textbf{Your Company Name}} % L means it goes tot left of page
+\fancyhead[R]{\headerimage} % Use the image provided in the markdown metadata
+\renewcommand{\footrulewidth}{0.2pt} % line width at the top of the footer
+\setlength{\footskip}{20pt} % Adjust the footer height from the end of the page
+
+% %%%%%% minipage for colummsn 
+% Footer
+\fancyfoot[C]{
+    \scriptsize
+    \begin{minipage}[t]{0.25\textwidth}
+        \raggedright
+        \textbf{Your Awesome Company} \\
+        Address \\
+        Mailing Address \\
+        Email
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.25\textwidth}
+        \raggedright
+        \textbf{Document ID: xxx} \\
+        Version: 1.0 \\
+        Document Type: xxx \\
+        Information Class: Confidential
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.25\textwidth}
+        \raggedright
+        \textbf{Information Owner: Author} \\
+        Date: \today
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.15\textwidth}
+        \raggedleft
+        Page \thepage\ of \pageref{LastPage}
+    \end{minipage}
+}
+
+%%%%%%%%%%%%%%%%%%5
+%%%%% Table settings
+%%%%%%%%%%%%%%%%%
+
+\setlength{\headheight}{32.05418pt}
+\addtolength{\topmargin}{-0.0014pt}
+
+\renewcommand{\arraystretch}{2.4} % Increase row height
+\setlength{\tabcolsep}{15pt} % Increase column width
+\rowcolors{2}{gray!5}{white}  % Alternating row colors: Light grey for odd rows, white for even
+
+\apptocmd{\toprule}{\hiderowcolors}{}{} % it removes if any color appears to the header
+\apptocmd{\endhead}{\showrowcolors}{}{} 
+\apptocmd{\endfirsthead}{\showrowcolors}{}{}
+
+% Doesnot make difference: Redefine the longtable commands to make only the header bold
+\newcommand{\boldfirstrow}{\rowcolor{white}\bfseries} % Command to bold the first row
+%Does not make difference:  Redefine \endfirsthead to include bold formatting
+\patchcmd{\longtable}{\endfirsthead}{\endfirsthead\boldfirstrow}{}{}
+
+\setlength{\heavyrulewidth}{.2pt} % Adjust the thickness of \toprule and \bottomrule
+\setlength{\lightrulewidth}{0.8pt} % Adjust the thickness of \midrule
+
+%% Color costumization for rules for table
+
+\newcommand{\heavycolor}{\arrayrulecolor{gray}} % Heavy rules (e.g., \toprule) in black
+\newcommand{\midrulecolor}{\arrayrulecolor{black}} % Midrule in red
+\newcommand{\bottomrulecolor}{\arrayrulecolor{black}} % \bottomrule in red
+\newcommand{\toprulecolor}{\arrayrulecolor{white}} % \toprule in blue
+
+% Redefine \midrule to apply the color
+\let\oldmidrule\midrule
+\renewcommand{\midrule}{\midrulecolor\oldmidrule\heavycolor}
+
+% Redefine \toprule to use blue
+\let\oldtoprule\toprule
+\renewcommand{\toprule}{\toprulecolor\oldtoprule\arrayrulecolor{white}} % Reset to black after \toprule
+
+% Redefine \bottomrule to use red
+\let\oldbottomrule\bottomrule
+\renewcommand{\bottomrule}{\bottomrulecolor\oldbottomrule\arrayrulecolor{black}} % Reset to black after \bottomrule
+
+%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%% For Code block
+%%%%%%%%%%%%%%%%%%%%%%
+
+
+%\setmainfont{Times New Roman} % Set main text font
+%\usepackage{minted}
+
+\lstset{
+  language=Python,  % Set the language for syntax highlighting
+  basicstyle=\fontspec{Inconsolata},
+%  basicstyle=\fontspec{Courier New},
+  keywordstyle=\color{blue},  % Color for keywords
+  commentstyle=\color{green},  % Color for comments
+  stringstyle=\color{red},  % Color for strings
+  showstringspaces=false  % Don't show spaces in strings
+  breaklines=true,
+  stepnumber=1,
+  numbersep=8pt,
+  frame=single,
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Body of document
+%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+% Table of Contents
+\tableofcontents
+\newpage
+
+$body$
+
+\end{document}
+
