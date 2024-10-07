@@ -8,14 +8,26 @@
 \usepackage[hidelinks]{hyperref}
 \usepackage[table,xcdraw]{xcolor} % For color support
 \usepackage{colortbl}
-\usepackage{svg}        % To handle SVG images
+%\usepackage{svg}        % To handle SVG images
 \usepackage{ifthen} % Add this line to use ifthen
 \usepackage{longtable} % For tables spanning multiple pages
 \usepackage{booktabs}  % For better table lines
 \usepackage{etoolbox}
 
-%\setmainfont{Times New Roman} % Set main text font
-\setmainfont{Open Sans}
+% Add these new lines for date handling
+\usepackage{xstring}
+\usepackage{datetime2}
+
+% Add these new commands for date formatting
+\newcommand{\frontmatterdate}{$date$} % Will store the date from front matter
+
+\newcommand{\getformatteddate}{%
+  \ifdefempty{\frontmatterdate}{%
+    \DTMtoday% Use today's date if front matter date is empty
+  }{%
+    \frontmatterdate% Use the date from front matter
+  }%
+}
 
 %%%%% font styling 
 \usepackage[normalem]{ulem} % if underline need 
@@ -49,7 +61,6 @@
 %%%% page size image handling 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
 % Define the custom command for placing images
 \newcommand{\placeimage}[3]{
   \begin{figure}[!ht]
@@ -58,7 +69,6 @@
     \caption{#3}
   \end{figure}
 }
-
 
 %%% it worked too but with call
 %\newcommand{\halfwidthimage}[1]{
@@ -72,18 +82,32 @@
 %%%% Header and Footer
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\geometry{a4paper, margin=1in}
+\geometry{a4paper, margin=1in, bottom=1.5in}  % Increased bottom margin
 
 \pagestyle{fancy}
-\fancyhf{} % To remove if something exist already at  header and footer
+\fancyhf{} % To remove if something exist already at header and footer
 % handles the header image from markdown
-\newcommand{\headerimage}{\includesvg[height=1cm]{$header-image$}}
+\newcommand{\headerimage}{%
+  \IfFileExists{logo.pdf}{%
+    \includegraphics[height=1cm]{logo.pdf}%
+  }{%
+    \IfFileExists{logo.png}{%
+      \includegraphics[height=1cm]{logo.png}%
+    }{%
+      \IfFileExists{logo.jpg}{%
+        \includegraphics[height=1cm]{logo.jpg}%
+      }{%
+        % If no image file is found, do nothing
+      }%
+    }%
+  }%
+}
 
 % Header
-%\fancyhead[L]{\textbf{Your Company Name}} % L means it goes tot left of page
+\fancyhead[L]{\textbf{$company$}}
 \fancyhead[R]{\headerimage} % Use the image provided in the markdown metadata
 \renewcommand{\footrulewidth}{0.2pt} % line width at the top of the footer
-\setlength{\footskip}{20pt} % Adjust the footer height from the end of the page
+\setlength{\footskip}{30pt} % Increased from 20pt to 30pt
 
 % %%%%%% minipage for colummsn 
 % Footer
@@ -91,24 +115,24 @@
     \scriptsize
     \begin{minipage}[t]{0.25\textwidth}
         \raggedright
-        \textbf{Your Awesome Company} \\
-        Address \\
-        Mailing Address \\
-        Email
+        $company$ \\
+        $address-line-one$ \\
+        $address-line-two$
     \end{minipage}
     \hfill
     \begin{minipage}[t]{0.25\textwidth}
         \raggedright
-        \textbf{Document ID: xxx} \\
-        Version: 1.0 \\
-        Document Type: xxx \\
-        Information Class: Confidential
+        Document ID: $document-id$ \\
+        Version: $version$ \\
+        Document Type: $document-type$ \\
+        Information Class: $information-class$
     \end{minipage}
     \hfill
     \begin{minipage}[t]{0.25\textwidth}
         \raggedright
-        \textbf{Information Owner: Author} \\
-        Date: \today
+        Information Owner: \\
+        $author$ \\
+        Date: \getformatteddate
     \end{minipage}
     \hfill
     \begin{minipage}[t]{0.15\textwidth}
@@ -166,30 +190,66 @@
 %%%%%%% For Code block
 %%%%%%%%%%%%%%%%%%%%%%
 
-
 %\setmainfont{Times New Roman} % Set main text font
 %\usepackage{minted}
 
+% Set up Open Sans as the main font using static files
+\setmainfont{Open Sans}[
+    Path = ./Open_Sans/static/,
+    Extension = .ttf,
+    UprightFont = OpenSans-Regular,
+    ItalicFont = OpenSans-Italic,
+    BoldFont = OpenSans-Bold,
+    BoldItalicFont = OpenSans-BoldItalic
+]
+
+% Set Inconsolata as the monospace font for code
+\setmonofont{Inconsolata}
+
+% Update the lstset to use Inconsolata
 \lstset{
-  language=Python,  % Set the language for syntax highlighting
-  basicstyle=\fontspec{Inconsolata},
-%  basicstyle=\fontspec{Courier New},
-  keywordstyle=\color{blue},  % Color for keywords
-  commentstyle=\color{green},  % Color for comments
-  stringstyle=\color{red},  % Color for strings
-  showstringspaces=false  % Don't show spaces in strings
+  language=Python,
+  basicstyle=\ttfamily,  % This will use the monospace font (Inconsolata)
+  keywordstyle=\color{blue},
+  commentstyle=\color{green},
+  stringstyle=\color{red},
+  showstringspaces=false,
   breaklines=true,
   stepnumber=1,
   numbersep=8pt,
   frame=single,
 }
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%
 %%%% Body of document
 %%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%% Front page
+%%%%%%%%%%%%%%%%%%%%%%
+
+% Title Page
+\begin{titlepage}
+    \vspace*{-1cm}
+    % Logo in the top left corner
+    \headerimage
+    \vspace{2cm}
+    
+    % Title left-aligned and size 60
+    \begin{flushleft}
+    {\fontsize{60}{72}\selectfont\textbf{$title$}\par}
+    \vspace{0.5cm}
+    
+    % Author name below the title
+    {\Large $author$\par}
+    \vspace{1cm}
+    
+    \vfill
+    {\large \getformatteddate\par}
+    \end{flushleft}
+\end{titlepage}
 
 % Table of Contents
 \tableofcontents

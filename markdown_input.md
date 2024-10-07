@@ -1,3 +1,16 @@
+---
+title: "The Document Title"
+author: "Lasse Nørfeldt"
+header-image: "logo.svg"
+company: "Quantum Dynamics Inc."
+address-line-one: "123 Planck Street"
+address-line-two: "Copenhagen, DK-1000"
+version: "2.0"
+document-id: "QRP-2023-002"
+document-type: "Report"
+information-class: "Confidential"
+# date: "2023-05-16"
+---
 
 
 # The Quantum Resonance Paradigm
