@@ -166,22 +166,22 @@
 
 %% Color costumization for rules for table
 
-\newcommand{\heavycolor}{\arrayrulecolor{gray}} % Heavy rules (e.g., \toprule) in black
-\newcommand{\midrulecolor}{\arrayrulecolor{black}} % Midrule in red
-\newcommand{\bottomrulecolor}{\arrayrulecolor{black}} % \bottomrule in red
-\newcommand{\toprulecolor}{\arrayrulecolor{white}} % \toprule in blue
+\newcommand{\heavycolor}{\arrayrulecolor{gray}} % Heavy rules (e.g., \toprule) in gray
+\newcommand{\midrulecolor}{\arrayrulecolor{black}} % Midrule in black
+\newcommand{\bottomrulecolor}{\arrayrulecolor{white}} % \bottomrule in white (effectively removing it)
+\newcommand{\toprulecolor}{\arrayrulecolor{white}} % \toprule in white
 
 % Redefine \midrule to apply the color
 \let\oldmidrule\midrule
 \renewcommand{\midrule}{\midrulecolor\oldmidrule\heavycolor}
 
-% Redefine \toprule to use blue
+% Redefine \toprule to use white (effectively removing it)
 \let\oldtoprule\toprule
-\renewcommand{\toprule}{\toprulecolor\oldtoprule\arrayrulecolor{white}} % Reset to black after \toprule
+\renewcommand{\toprule}{\toprulecolor\oldtoprule\arrayrulecolor{white}}
 
-% Redefine \bottomrule to use red
+% Redefine \bottomrule to use white (effectively removing it)
 \let\oldbottomrule\bottomrule
-\renewcommand{\bottomrule}{\bottomrulecolor\oldbottomrule\arrayrulecolor{black}} % Reset to black after \bottomrule
+\renewcommand{\bottomrule}{\bottomrulecolor\oldbottomrule\arrayrulecolor{white}}
 
 %%%%%%%%%%%%%%%%%%%%%
 
