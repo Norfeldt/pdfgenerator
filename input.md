@@ -1,4 +1,16 @@
-
+---
+title: "The Document Title"
+author: "Lasse Nørfeldt"
+header-image: "logo.svg"
+company: "Quantum Dynamics Inc."
+address-line-one: "123 Planck Street"
+address-line-two: "Copenhagen, DK-1000"
+version: "2.0"
+document-id: "QRP-2023-002"
+document-type: "Report"
+information-class: "Confidential"
+# date: "2023-05-16"
+---
 
 
 # The Quantum Resonance Paradigm
@@ -13,6 +25,7 @@
 
 Dr. Elara Voss *hypothesized* that the quantum flux could be _manipulated_ to create **wormholes** through __spacetime__. Her groundbreaking research suggested that ***stable traversable wormholes*** might be ___possible___ using exotic matter with negative energy density.
 
+
 ## Lists
 
 ### Unordered List: Essential Equipment for Quantum Experiments
@@ -23,31 +36,27 @@ Dr. Elara Voss *hypothesized* that the quantum flux could be _manipulated_ to cr
   * Type B: High-energy configuration
 * Neutrino Detector Array
 
-### Ordered List: Steps to Initiate the Quantum Resonance Chamber
-
-1. Activate the superconducting magnets
-2. Initiate the particle accelerator sequence
-3. Engage the quantum field stabilizers
-    1. Primary field
-    2. Secondary field
-4. Monitor for tachyon emissions
-
 ## Links
 
 For more information on quantum mechanics, visit [Quantum Physics Info Hub](https://example.com/quantum-physics).
 
 To jump to the equipment list, [click here](#unordered-list-essential-equipment-for-quantum-experiments).
 
+
 ## Images
 
-![City map](<city-of-copenhagen-miljozoner.png>)
+\placeimage{city-of-copenhagen-miljozoner.png}{0.2}{city map}
 
+
+---
+header-image: logo.svg
+---
 
 ## Code
 
 Here's a snippet of code used in our quantum simulations:
 
-```python
+```{.python}
 def calculate_wave_function(psi, H, t):
     """
     Solves the time-dependent Schrödinger equation.
@@ -65,23 +74,31 @@ His colleague, Dr. Nova Flux, added:
 
 > In the quantum realm, particles dance to the tune of probability waves. What we perceive as solid matter is mostly empty space, filled with fields of possibility.
 
+
 ## Horizontal Rules
 
 ---
 
 ## Tables
 
-| Particle | Spin | Charge |
-| -------- | ---- | ------ |
-| Electron | 1/2  | -1     |
-| Proton   | 1/2  | +1     |
-| Neutron  | 1/2  | 0      |
+|   Particle| Spin     | Charge | Mass  | Color  | Type    | Lifetime |
+|-----------|----------|--------|-------|--------|---------|----------|
+| Electron  | 1/2      | -1     | 0.5   | Yellow | Lepton  | Stable   |
+| Proton    | 1/2      | +1     | 0.93  | Red    | Baryon  | Stable   |
+| Neutron   | 1/2      | 0      | 0.093 | Blue   | Baryon  | 10 mins  |
+| Muon      | 1/2      | -1     | 105.7 | Green  | Lepton  | 2.2 µs   |
+| Pion      | 0        | ±1, 0  | 139.6 | Orange | Meson   | 26 ns    |
+| Neutrino  | 1/2      | 0      | ~0    | Purple | Lepton  | Stable   |
+| Tau       | 1/2      | -1     | 1777  | Pink   | Lepton  | 0.29 ps  |
+| Photon    | 1        |  0     | 0     | None   | Boson   | Stable   |
 
-| Experiment | Success Rate | Quantum Coherence Time |
-| :--------- | :----------: | ---------------------: |
-| A          |     78%      |                 0.5 ms |
-| B          |     92%      |                 1.2 ms |
-| C          |     86%      |                 0.8 ms |
+
+| Particle    |Spin      | Charge | Mass  | Color    | Notes  |
+|-------------|----------|--------|-------|----------|--------|
+| Electron    | 1/2      | -1     | 0.5   | Yellow   | Lepton |
+| Proton      | 1/2      | +1     | 0.93  | Red      | Baryon |
+| Neutron     | 1/2      | 0      | 0.093 | Blue     | Baryon |
+
 
 ## Task Lists
 
@@ -104,6 +121,7 @@ Quantum Superposition
 Entanglement
 : A phenomenon where particles become interconnected and the quantum state of each particle cannot be described independently
 
+
 ---
 
 Dr. Aurora Quasar's latest paper, "Quantum Tunneling in Curved Spacetime," explores the intersection of quantum mechanics and general relativity. She posits that quantum effects near black holes could lead to information preservation, potentially resolving the black hole information paradox.
@@ -111,3 +129,7 @@ Dr. Aurora Quasar's latest paper, "Quantum Tunneling in Curved Spacetime," explo
 The Interstellar Quantum Research Institute (IQRI) has announced plans for a new particle accelerator that will dwarf the Large Hadron Collider. This massive undertaking, dubbed "The Cosmic Loop," aims to recreate conditions similar to those microseconds after the Big Bang.
 
 As we delve deeper into the quantum realm, we find that reality becomes increasingly bizarre and counterintuitive. The classical laws of physics break down, and we enter a world where probability reigns supreme. It is in this strange and wonderful domain that we hope to uncover the deepest secrets of the universe.
+
+
+
+
