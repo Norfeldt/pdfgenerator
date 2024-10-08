@@ -35,7 +35,6 @@ echo "Installing required packages..."
 if $IS_MAC; then
     brew install \
         texlive \
-        inkscape
 else
     apt-get install -y \
         texlive-xetex \
@@ -47,7 +46,6 @@ else
         texlive-science \
         texlive-pictures \
         fonts-inconsolata \
-        inkscape
 fi
 
 # Function to check if a LaTeX package is available

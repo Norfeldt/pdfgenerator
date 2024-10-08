@@ -1,29 +1,193 @@
-\documentclass[a4paper]{article}
-\usepackage{amsmath,amssymb}
-\usepackage{ifxetex,ifluatex}
+\documentclass{article}
+\usepackage{fontspec} % Use fontspec instead of inconsolat
+\usepackage{listings} % For code formatting without shell-escape
 \usepackage{fancyhdr}
 \usepackage{graphicx}
 \usepackage{geometry}
 \usepackage{lastpage}
-\usepackage{hyperref}
+\usepackage[hidelinks]{hyperref}
+\usepackage[table,xcdraw]{xcolor} % For color support
+\usepackage{colortbl}
+%\usepackage{svg}        % To handle SVG images
+\usepackage{ifthen} % Add this line to use ifthen
+\usepackage{longtable} % For tables spanning multiple pages
+\usepackage{booktabs}  % For better table lines
+\usepackage{etoolbox}
 
-% Add these lines after the hyperref package
-\hypersetup{
-    colorlinks=false,
-    pdfborder={0 0 0},
+% Add these new lines for date handling
+\usepackage{xstring}
+\usepackage{datetime2}
+
+% Add these new commands for date formatting
+\newcommand{\frontmatterdate}{$date$} % Will store the date from front matter
+
+\newcommand{\getformatteddate}{%
+  \ifdefempty{\frontmatterdate}{%
+    \DTMtoday% Use today's date if front matter date is empty
+  }{%
+    \frontmatterdate% Use the date from front matter
+  }%
 }
 
-\usepackage{xcolor}
-\usepackage{enumitem}
-\usepackage{ifthen}
-\usepackage{fancyvrb}
-\usepackage{framed}
-\usepackage{longtable}
-\usepackage{booktabs}
-\usepackage{svg}
+%%%%% font styling 
+\usepackage[normalem]{ulem} % if underline need 
 
-% Add fontspec package for custom font support
-\usepackage{fontspec}
+%%%%%%%%%%%%%%%%%
+%%%%% Task lists 
+%%%%%%%%%%%%%%%%
+
+% error handling tightlist issue
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\newcommand{\passthrough}[1]{#1}
+
+\usepackage{enumitem}  % Required for custom list styles
+\usepackage{amssymb}   % For custom symbols like checkmarks
+\usepackage{fontawesome5}  % Optional: Use icons if needed
+
+\newlist{tasklist}{itemize}{1}
+\setlist[tasklist]{label=\(\square\), left=0pt, topsep=0pt, itemsep=1pt}  % Default: Unchecked items use a square
+
+% Handling of checked items with a filled box or a checkmark
+\newcommand{\checkeditem}{\item[\(\boxtimes\)]}  % Change \(\boxtimes\) to other symbols as needed
+
+% Automatically apply the custom environment for task lists
+\newenvironment{tasklistenv}{
+  \renewcommand{\item}{\(\square\)\hspace{2pt}}  % usually: Unchecked item symbol
+  \renewcommand{\checkeditem}{\(\boxtimes\)\hspace{2pt}}  % Default: Checked item symbol
+}{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% page size image handling 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Define the custom command for placing images
+\newcommand{\placeimage}[3]{
+  \begin{figure}[!ht]
+    \centering
+    \includegraphics[scale=#2]{#1}
+    \caption{#3}
+  \end{figure}
+}
+
+%%% it worked too but with call
+%\newcommand{\halfwidthimage}[1]{
+%  \begin{figure}[htbp]
+%  \centering
+%  \includegraphics[width=0.5\textwidth]{#1}
+%  \end{figure}
+%}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Header and Footer
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\geometry{a4paper, margin=1in, bottom=1.5in}  % Increased bottom margin
+
+\pagestyle{fancy}
+\fancyhf{} % To remove if something exist already at header and footer
+% handles the header image from markdown
+\newcommand{\headerimage}[1][height=1cm]{%
+  \IfFileExists{logo.png}{%
+    \includegraphics[#1]{logo.png}%
+  }{%
+    \IfFileExists{logo.jpg}{%
+      \includegraphics[#1]{logo.jpg}%
+    }{%
+      % If no image file is found, do nothing
+    }%
+  }%
+}
+
+% Header
+\fancyhead[L]{\textbf{$company$}}
+\fancyhead[R]{\headerimage} % Use the image provided in the markdown metadata
+\renewcommand{\footrulewidth}{0.2pt} % line width at the top of the footer
+\setlength{\footskip}{30pt} % Increased from 20pt to 30pt
+
+% %%%%%% minipage for colummsn 
+% Footer
+\fancyfoot[C]{
+    \scriptsize
+    \begin{minipage}[t]{0.25\textwidth}
+        \raggedright
+        $company$ \\
+        $address-line-one$ \\
+        $address-line-two$
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.25\textwidth}
+        \raggedright
+        Document ID: $document-id$ \\
+        Version: $version$ \\
+        Document Type: $document-type$ \\
+        Information Class: $information-class$
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.25\textwidth}
+        \raggedright
+        Information Owner: \\
+        $author$ \\
+        Date: \getformatteddate
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.15\textwidth}
+        \raggedleft
+        Page \thepage\ of \pageref{LastPage}
+    \end{minipage}
+}
+
+%%%%%%%%%%%%%%%%%%5
+%%%%% Table settings
+%%%%%%%%%%%%%%%%%
+
+\setlength{\headheight}{32.05418pt}
+\addtolength{\topmargin}{-0.0014pt}
+
+\renewcommand{\arraystretch}{2.4} % Increase row height
+\setlength{\tabcolsep}{15pt} % Increase column width
+\rowcolors{2}{gray!5}{white}  % Alternating row colors: Light grey for odd rows, white for even
+
+\apptocmd{\toprule}{\hiderowcolors}{}{} % it removes if any color appears to the header
+\apptocmd{\endhead}{\showrowcolors}{}{} 
+\apptocmd{\endfirsthead}{\showrowcolors}{}{}
+
+% Doesnot make difference: Redefine the longtable commands to make only the header bold
+\newcommand{\boldfirstrow}{\rowcolor{white}\bfseries} % Command to bold the first row
+%Does not make difference:  Redefine \endfirsthead to include bold formatting
+\patchcmd{\longtable}{\endfirsthead}{\endfirsthead\boldfirstrow}{}{}
+
+\setlength{\heavyrulewidth}{.2pt} % Adjust the thickness of \toprule and \bottomrule
+\setlength{\lightrulewidth}{0.8pt} % Adjust the thickness of \midrule
+
+%% Color costumization for rules for table
+
+\newcommand{\heavycolor}{\arrayrulecolor{gray}} % Heavy rules (e.g., \toprule) in gray
+\newcommand{\midrulecolor}{\arrayrulecolor{black}} % Midrule in black
+\newcommand{\bottomrulecolor}{\arrayrulecolor{white}} % \bottomrule in white (effectively removing it)
+\newcommand{\toprulecolor}{\arrayrulecolor{white}} % \toprule in white
+
+% Redefine \midrule to apply the color
+\let\oldmidrule\midrule
+\renewcommand{\midrule}{\midrulecolor\oldmidrule\heavycolor}
+
+% Redefine \toprule to use white (effectively removing it)
+\let\oldtoprule\toprule
+\renewcommand{\toprule}{\toprulecolor\oldtoprule\arrayrulecolor{white}}
+
+% Redefine \bottomrule to use white (effectively removing it)
+\let\oldbottomrule\bottomrule
+\renewcommand{\bottomrule}{\bottomrulecolor\oldbottomrule\arrayrulecolor{white}}
+
+%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%% For Code block
+%%%%%%%%%%%%%%%%%%%%%%
+
+%\setmainfont{Times New Roman} % Set main text font
+%\usepackage{minted}
 
 % Set up Open Sans as the main font using static files
 \setmainfont{Open Sans}[
@@ -35,106 +199,38 @@
     BoldItalicFont = OpenSans-BoldItalic
 ]
 
-% Remove the fallback font family definition since we're using static fonts directly
+% Set Inconsolata as the monospace font for code
+\setmonofont{Inconsolata}
 
-% Define \boxtimes if it's not available
-\providecommand{\boxtimes}{\times}
-
-% Add the tightlist definition
-\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
-
-% Add the pandocbounded definition
-\newcommand{\pandocbounded}[1]{\begin{minipage}{\linewidth}#1\end{minipage}}
-
-% Define shadecolor
-\definecolor{shadecolor}{RGB}{248,248,248}
-
-% Define Shaded environment
-\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
-
-% Define Highlighting environment
-\newenvironment{Highlighting}{}{}
-
-% Define syntax highlighting commands
-\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
-\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{#1}}
-\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
-\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
-\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
-\newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
-\newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
-\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{#1}}}
-\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{#1}}
-\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
-\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{#1}}
-\newcommand{\RegionMarkerTok}[1]{#1}
-\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
-\newcommand{\NormalTok}[1]{#1}
-
-% Define additional syntax highlighting commands
-\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
-\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
-\newcommand{\BuiltInTok}[1]{#1}
-\newcommand{\ExtensionTok}[1]{#1}
-\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{#1}}
-\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{#1}}
-\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
-\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
-\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{#1}}
-\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
-\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
-\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{#1}}
-\newcommand{\ImportTok}[1]{#1}
-\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{#1}}}
-\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
-\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
-\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
-
-% Page geometry
-\geometry{a4paper, margin=1in}
-
-% Header and Footer settings
-\pagestyle{fancy}
-\fancyhf{}
-
-% Header
-\fancyhead[L]{\textbf{$company$}}
-\fancyhead[R]{%
-  \IfFileExists{logo.pdf}{%
-    \includegraphics[height=1cm]{logo.pdf}%
-  }{%
-    % File doesn't exist, do nothing
-  }%
+% Update the lstset to use Inconsolata
+\lstset{
+  language=Python,
+  basicstyle=\ttfamily,  % This will use the monospace font (Inconsolata)
+  keywordstyle=\color{blue},
+  commentstyle=\color{green},
+  stringstyle=\color{red},
+  showstringspaces=false,
+  breaklines=true,
+  stepnumber=1,
+  numbersep=8pt,
+  frame=single,
 }
 
-% Footer
-\renewcommand{\footrulewidth}{0.4pt}
-\fancyfoot[L]{\scriptsize $company$ \\ 
-               $addressone$ \\ 
-               $addresstwo$}
-\fancyfoot[C]{\scriptsize Version $version$ \\
-               Document ID: $documentid$ \\
-               \documentclassification}
-\fancyfoot[R]{\scriptsize Page \thepage\ of \pageref{LastPage}}
+%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Body of document
+%%%%%%%%%%%%%%%%%%%%%%
 
-\setlength{\headheight}{32.05278pt}
-\addtolength{\topmargin}{-20.05278pt}
-
-% Define document classification
-\newcommand{\documentclassification}{Confidential}
-
-% Begin document
 \begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%% Front page
+%%%%%%%%%%%%%%%%%%%%%%
 
 % Title Page
 \begin{titlepage}
     \vspace*{-1cm}
-    % Logo in the top left corner
-    \IfFileExists{logo.pdf}{%
-        \includegraphics[height=2cm]{logo.pdf}%
-    }{%
-        % File doesn't exist, do nothing
-    }%
+    % Logo in the top left corner, now 2x bigger
+    \headerimage[height=2cm]
     \vspace{2cm}
     
     % Title left-aligned and size 60
@@ -146,9 +242,8 @@
     {\Large $author$\par}
     \vspace{1cm}
     
-    % Removed the confidential classification
     \vfill
-    {\large \today\par}
+    {\large \getformatteddate\par}
     \end{flushleft}
 \end{titlepage}
 
@@ -156,7 +251,6 @@
 \tableofcontents
 \newpage
 
-% Include Markdown content
 $body$
 
 \end{document}
