@@ -87,15 +87,15 @@
 \pagestyle{fancy}
 \fancyhf{} % To remove if something exist already at header and footer
 % handles the header image from markdown
-\newcommand{\headerimage}{%
+\newcommand{\headerimage}[1][height=1cm]{%
   \IfFileExists{logo.pdf}{%
-    \includegraphics[height=1cm]{logo.pdf}%
+    \includegraphics[#1]{logo.pdf}%
   }{%
     \IfFileExists{logo.png}{%
-      \includegraphics[height=1cm]{logo.png}%
+      \includegraphics[#1]{logo.png}%
     }{%
       \IfFileExists{logo.jpg}{%
-        \includegraphics[height=1cm]{logo.jpg}%
+        \includegraphics[#1]{logo.jpg}%
       }{%
         % If no image file is found, do nothing
       }%
@@ -233,8 +233,8 @@
 % Title Page
 \begin{titlepage}
     \vspace*{-1cm}
-    % Logo in the top left corner
-    \headerimage
+    % Logo in the top left corner, now 2x bigger
+    \headerimage[height=2cm]
     \vspace{2cm}
     
     % Title left-aligned and size 60
