@@ -1,0 +1,17 @@
+---
+title: ""
+author: "Lasse Nørfeldt"
+# header-image: ".png"
+company: "Knowit Solutions"
+address-line-one: "Nyropsgade 41"
+address-line-two: "1602 København V"
+version: "1.0"
+document-id: "N/A"
+document-type: ""
+# information-class: "No Label"
+# information-class: "Public"
+# information-class: "Internal"
+information-class: "Confidential"
+# information-class: "Secret"
+# date: "20YY-MM-DD"
+---
