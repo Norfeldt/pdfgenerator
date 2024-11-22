@@ -87,15 +87,11 @@
 \pagestyle{fancy}
 \fancyhf{} % To remove if something exist already at header and footer
 % handles the header image from markdown
-\newcommand{\headerimage}[1][height=1cm]{%
-  \IfFileExists{logo.png}{%
-    \includegraphics[#1]{logo.png}%
-  }{%
-    \IfFileExists{logo.jpg}{%
-      \includegraphics[#1]{logo.jpg}%
+\newcommand{\headerimage}[1][width=0.2\textwidth,height=1cm,keepaspectratio]{% Adjust width and height as needed
+  \IfFileExists{$header-image$}{%
+    \includegraphics[#1,scale=0.15]{$header-image$}% Use the image specified in the front-matter
     }{%
       % If no image file is found, do nothing
-    }%
   }%
 }
 
@@ -250,6 +246,28 @@
 % Table of Contents
 \tableofcontents
 \newpage
+
+% Add this line to remove paragraph indentation
+\setlength{\parindent}{0pt}
+
+% Add this line to add space between paragraphs
+\setlength{\parskip}{1em}
+
+% Custom quote environment with large, styled quotation marks
+\renewenvironment{quote}
+  {\list{}{\rightmargin=1cm \leftmargin=1cm}%
+   \item\relax\large\itshape\textbf{\textquotedblleft}} % Start with a large, bold open quote
+  {\textbf{\textquotedblright}\endlist} % End with a large, bold close quote
+
+% Redefine sectioning commands to remove numbering
+\renewcommand{\thesection}{}
+\renewcommand{\thesubsection}{}
+\renewcommand{\thesubsubsection}{}
+
+% Ensure that the section titles are still displayed
+\makeatletter
+\renewcommand{\@seccntformat}[1]{}
+\makeatother
 
 $body$
 
