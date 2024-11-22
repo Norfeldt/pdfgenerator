@@ -1,0 +1,37 @@
+#!/bin/zsh
+
+if [ $# -eq 0 ]; then
+    echo "Usage: makepdf <input-file.md>"
+    exit 1
+fi
+
+input_file="$1"
+output_file="${input_file%.*}.pdf"
+frontmatter_template="/usr/local/share/markdown-to-pdf/frontmatter.md"
+
+# Check if file has front matter (looking for --- at start of file)
+if ! grep -q "^---" "$input_file"; then
+    # No front matter found, prepend the template with an extra newline
+    (cat "$frontmatter_template"; echo -e "\n"; cat "$input_file") > "${input_file}.tmp"
+    mv "${input_file}.tmp" "$input_file"
+    echo "Front matter was missing. It has been added. Update the front matter and run the command again."
+    exit 0
+fi
+
+# Template is now in the same directory as this script
+template_path="/usr/local/share/markdown-to-pdf/template.tex"
+
+# Run pandoc command with additional options to handle empty header-image
+pandoc "$input_file" \
+    -o "$output_file" \
+    --template="$template_path" \
+    --pdf-engine=xelatex \
+    --listings \
+    --pdf-engine-opt=--shell-escape \
+
+if [ $? -eq 0 ]; then
+    echo "Successfully created: $output_file"
+else
+    echo "Error creating PDF"
+    exit 1
+fi
