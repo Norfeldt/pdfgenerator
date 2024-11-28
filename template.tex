@@ -65,10 +65,13 @@
 \newcommand{\placeimage}[3]{
   \begin{figure}[!ht]
     \centering
-    \includegraphics[scale=#2]{#1}
+    \pandocbounded{\includegraphics[scale=#2]{#1}}
     \caption{#3}
   \end{figure}
 }
+
+% Define the pandocbounded command for image handling
+\newcommand{\pandocbounded}[1]{#1}
 
 %%% it worked too but with call
 %\newcommand{\halfwidthimage}[1]{
